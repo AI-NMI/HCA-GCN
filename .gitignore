@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environments and editors
+.venv/
+venv/
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Store
+
+# Private data and generated artifacts
+data/
+outputs/
+result/
+results/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+*.mat
+*.log
+training_info.txt
+
+# Local overrides
+setting/local*.yaml
+setting/private*.yaml

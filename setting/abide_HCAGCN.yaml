@@ -1,0 +1,73 @@
+# Public example configuration for the COBRE/Schaefer-400 experiment.
+# Set HCA_GCN_DATA_ROOT locally; raw or derived imaging data are not included.
+seed: 123
+device: auto
+
+data:
+  dataset: COBRE
+  atlas: schaefer400
+  data_root: $HCA_GCN_DATA_ROOT
+
+  # Relative to data_root. Each directory contains one MAT file per subject.
+  ts_control_path: timeseries/control
+  ts_patient_path: timeseries/patient
+  ngc_control_path: connectivity/nonlinear_gc/control
+  ngc_patient_path: connectivity/nonlinear_gc/patient
+  granger_control_path: connectivity/linear_granger_p/control
+  granger_patient_path: connectivity/linear_granger_p/patient
+  pearson_control_path: connectivity/pearson/control
+  pearson_patient_path: connectivity/pearson/patient
+  spearman_control_path: connectivity/spearman/control
+  spearman_patient_path: connectivity/spearman/patient
+
+  ts_key: ROISignals
+  ngc_key: GC_est
+  granger_key: Granger
+  pearson_key: Pearson
+  spearman_key: Spearman
+  subject_id_regex: '(\d{7})'
+
+  node_size: 400
+  time_points: 140
+  n_splits: 5
+  # Matches the fold sizes reported for the 145-subject COBRE cohort.
+  test_fold_sizes: [29, 28, 29, 29, 30]
+  validation_size: 15
+  split_file: null
+  split_output_path: outputs/splits/COBRE_schaefer400.json
+
+  batch_size: 16
+  val_batch_size: 16
+  test_batch_size: 16
+  num_workers: 0
+  pin_memory: false
+  normalization: train_zscore
+
+model:
+  type: HCA_GCN
+  variant: m4_no_temporal
+  roi_num: 400
+  time_series: 140
+  embedding_size: 32
+  node_feature_dim: 32
+  temporal_hidden_dim: 64
+  temporal_layers: 2
+  attention_heads: 2
+  pool_ratio: 0.5
+  dropout: 0.5
+  single_graph_fc_weight: 0.5
+
+train:
+  optimizer: adam
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  epochs: 500
+  early_stopping_patience: 0
+  min_delta: 0.0
+  gradient_accumulation_steps: 4
+  class_weights: null
+  sparsity_loss: true
+  sparsity_loss_weight: 0.5e-4
+  decision_threshold: 0.5
+  save_held_out_graphs: true
+  output_root: outputs
